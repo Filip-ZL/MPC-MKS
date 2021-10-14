@@ -39,16 +39,16 @@ void sct_value(uint16_t value){
 	static const uint32_t reg_values[3][10] = {
 			{
 					//PCDE--------GFAB @ DIS1
-					0b0111000000000111 << 16,
-					0b0100000000000001 << 16,
-					0b0011000000001011 << 16,
-					0b0110000000001011 << 16,
-					0b0100000000001101 << 16,
-					0b0110000000001110 << 16,
-					0b0111000000001110 << 16,
-					0b0100000000000011 << 16,
-					0b0111000000001111 << 16,
-					0b0110000000001111 << 16,
+					0b0111000000000111 << 16, // 0
+					0b0100000000000001 << 16, // 1
+					0b0011000000001011 << 16, // 2
+					0b0110000000001011 << 16, // 3
+					0b0100000000001101 << 16, // 4
+					0b0110000000001110 << 16, // 5
+					0b0111000000001110 << 16, // 6
+					0b0100000000000011 << 16, // 7
+					0b0111000000001111 << 16, // 8
+					0b0110000000001111 << 16, // 9
 			},
 			{
 					//----PCDEGFAB---- @ DIS2
@@ -80,7 +80,7 @@ void sct_value(uint16_t value){
 
 	reg |= reg_values[0][value / 100 % 10];  // Find hunderds in number
 	reg |= reg_values[1][value / 10 % 10];   // Find tens in number
-	reg |= reg_values[2][value % 10];        // find units in number
+	reg |= reg_values[2][value % 10];        // Find units in number
 
 	sct_led(reg);  // calling function for display value
 
