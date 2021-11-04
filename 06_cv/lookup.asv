@@ -1,0 +1,5 @@
+load ntc.csv
+tem = ntc(1:156,1);
+ADC_val = 1024*(ntc(1:156, 2)./(ntc(1:156, 2)+10e3));
+
+stem(ADC_val, tem)
