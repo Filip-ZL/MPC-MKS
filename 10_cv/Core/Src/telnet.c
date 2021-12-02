@@ -120,6 +120,7 @@ static void telnet_process_command(char *cmd, struct netconn *conn){
 	char *token;
 	char *saveptr1;
 	token = strtok_r(cmd, " ", &saveptr1);
+	// Parsing commands sent remotely
 	if(strcasecmp(token, "HELLO") == 0){
 		sprintf(s, "Communication OK \n");
 		netconn_write(conn, s, strlen(s), NETCONN_COPY);
@@ -158,6 +159,7 @@ static void telnet_process_command(char *cmd, struct netconn *conn){
 		netconn_write(conn, s, strlen(s), NETCONN_COPY);
 	}
 	else if(strcasecmp(token, "STATUS") == 0){
+		// Figuring status of led's
 		char *led1 = HAL_GPIO_ReadPin(LD1_GPIO_Port, LD1_Pin)? "ON" : "OFF";
 		char *led2 = HAL_GPIO_ReadPin(LD2_GPIO_Port, LD2_Pin)? "ON" : "OFF";
 		char *led3 = HAL_GPIO_ReadPin(LD2_GPIO_Port, LD2_Pin)? "ON" : "OFF";

@@ -295,8 +295,11 @@ void StartDefaultTask(void const * argument)
   /* init code for LWIP */
   MX_LWIP_Init();
   /* USER CODE BEGIN 5 */
+  // initialize tcp server on port 7
   tcpecho_init();
+  // initialize telnet server on port 23
   telnet_init();
+  // initialize telnet server on port 80
   httpd_init();
   /* Infinite loop */
   for(;;)
