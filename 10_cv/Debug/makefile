@@ -16,6 +16,7 @@ RM := rm -rf
 -include Middlewares/Third_Party/LwIP/src/core/ipv4/subdir.mk
 -include Middlewares/Third_Party/LwIP/src/core/subdir.mk
 -include Middlewares/Third_Party/LwIP/src/apps/mqtt/subdir.mk
+-include Middlewares/Third_Party/LwIP/src/apps/http/subdir.mk
 -include Middlewares/Third_Party/LwIP/src/api/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
@@ -74,8 +75,8 @@ all: main-build
 main-build: 10_cv.elf secondary-outputs
 
 # Tool invocations
-10_cv.elf: $(OBJS) $(USER_OBJS) C:\Users\ffili\OneDrive\Dokumenty\MPC-MKS\10_cv\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "10_cv.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\ffili\OneDrive\Dokumenty\MPC-MKS\10_cv\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="10_cv.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+10_cv.elf: $(OBJS) $(USER_OBJS) D:\Documents\xjasek15\MPC-MKS\10_cv\STM32F429ZITX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "10_cv.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Documents\xjasek15\MPC-MKS\10_cv\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="10_cv.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

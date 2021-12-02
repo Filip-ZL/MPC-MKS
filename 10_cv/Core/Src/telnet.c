@@ -146,10 +146,22 @@ static void telnet_process_command(char *cmd, struct netconn *conn){
 		sprintf(s, "OK \n");
 		netconn_write(conn, s, strlen(s), NETCONN_COPY);
 	}
+	else if(strcasecmp(token, "LED3") == 0){
+		token = strtok_r(NULL, " ", &saveptr1);
+		if(strcasecmp(token, "ON") == 0){
+			HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, 1);
+		}
+		else if(strcasecmp(token, "OFF") == 0){
+			HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, 0);
+		}
+		sprintf(s, "OK \n");
+		netconn_write(conn, s, strlen(s), NETCONN_COPY);
+	}
 	else if(strcasecmp(token, "STATUS") == 0){
 		char *led1 = HAL_GPIO_ReadPin(LD1_GPIO_Port, LD1_Pin)? "ON" : "OFF";
 		char *led2 = HAL_GPIO_ReadPin(LD2_GPIO_Port, LD2_Pin)? "ON" : "OFF";
-		sprintf(s,"Led 1 is %s, Led 2 is %s \n", led1, led2);
+		char *led3 = HAL_GPIO_ReadPin(LD2_GPIO_Port, LD2_Pin)? "ON" : "OFF";
+		sprintf(s,"Led 1 is %s, Led 2 is %s, led 3 is %s \n", led1, led2, led3);
 		netconn_write(conn, s, strlen(s), NETCONN_COPY);
 	}
 }

@@ -20,6 +20,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "lwip.h"
+#include "lwip/apps/httpd.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -296,6 +297,7 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN 5 */
   tcpecho_init();
   telnet_init();
+  httpd_init();
   /* Infinite loop */
   for(;;)
   {
