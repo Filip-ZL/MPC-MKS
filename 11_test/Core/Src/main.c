@@ -131,8 +131,8 @@ int main(void)
   {
 	tlacitko();
 	// spreads timing across one move cycle from 20-300ms with respect of ABCDEF points on 7seg
-	// formula below is counted as follows: 20/6 + raw_pot/4096*300/6 --> after few math steps we can receive formula below
-	delay = 10/3 + raw_pot*50/4096;
+	// formula below is counted as follows: 20/10 + raw_pot/4096*300/10 --> after few math steps we can receive formula below
+	delay = 2 + raw_pot*30/4096;
 	// simple state machine deciding whether points are moving clockwise or counterclockwise
 	switch (state){
 	case clockwise:
