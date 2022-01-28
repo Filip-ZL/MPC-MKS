@@ -255,6 +255,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 
 08000244 <tlacitko>:
 
+// simple debouncing implementation
 void tlacitko(void)
 {
  8000244:	b580      	push	{r7, lr}
@@ -403,13 +404,15 @@ int main(void)
  800031e:	1dbb      	adds	r3, r7, #6
  8000320:	2200      	movs	r2, #0
  8000322:	801a      	strh	r2, [r3, #0]
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	// spreads timing across one bargraf cycle from 20-300ms
 	tlacitko();
  8000324:	f7ff ff8e 	bl	8000244 <tlacitko>
+	// spreads timing across one move cycle from 20-300ms with respect of ABCDEF points on 7seg
+	// formula below is counted as follows: 20/6 + raw_pot/4096*300/6 --> after few math steps we can receive formula below
 	delay = 10/3 + raw_pot*50/4096;
  8000328:	4b1e      	ldr	r3, [pc, #120]	; (80003a4 <main+0xb4>)
  800032a:	681b      	ldr	r3, [r3, #0]
@@ -418,6 +421,7 @@ int main(void)
  8000330:	0b1b      	lsrs	r3, r3, #12
  8000332:	3303      	adds	r3, #3
  8000334:	603b      	str	r3, [r7, #0]
+	// simple state machine deciding whether points are moving clockwise or counterclockwise
 	switch (state){
  8000336:	4b1c      	ldr	r3, [pc, #112]	; (80003a8 <main+0xb8>)
  8000338:	781b      	ldrb	r3, [r3, #0]
@@ -476,6 +480,7 @@ int main(void)
  800038a:	2200      	movs	r2, #0
  800038c:	801a      	strh	r2, [r3, #0]
  800038e:	e7c9      	b.n	8000324 <main+0x34>
+		// simple trick, if initial value is 0 and we decrement this value as long as it's uint16_t it suddenly became 2^16 which is bigger than 5 and it's set to max BCD value
 		}else if(state == counterclockwise){
  8000390:	4b05      	ldr	r3, [pc, #20]	; (80003a8 <main+0xb8>)
  8000392:	781b      	ldrb	r3, [r3, #0]

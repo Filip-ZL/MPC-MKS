@@ -65,6 +65,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
  raw_pot = HAL_ADC_GetValue(hadc);
 }
 
+// simple debouncing implementation
 void tlacitko(void)
 {
 	static uint16_t debounce_t1 = 0xFFFF;
@@ -128,9 +129,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	// spreads timing across one bargraf cycle from 20-300ms
 	tlacitko();
+	// spreads timing across one move cycle from 20-300ms with respect of ABCDEF points on 7seg
+	// formula below is counted as follows: 20/6 + raw_pot/4096*300/6 --> after few math steps we can receive formula below
 	delay = 10/3 + raw_pot*50/4096;
+	// simple state machine deciding whether points are moving clockwise or counterclockwise
 	switch (state){
 	case clockwise:
 		sct_value(value);
@@ -147,6 +150,7 @@ int main(void)
 	if (value > 5){
 		if (state == clockwise){
 			value = 0;
+		// simple trick, if initial value is 0 and we decrement this value as long as it's uint16_t it suddenly became 2^16 which is bigger than 5 and it's set to max BCD value
 		}else if(state == counterclockwise){
 			value = 5;
 		}
