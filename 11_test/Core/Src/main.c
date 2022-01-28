@@ -54,6 +54,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_ADC_Init(void);
 /* USER CODE BEGIN PFP */
 static volatile uint32_t raw_pot;
+static enum {clockwise, counterclockwise} state = clockwise;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -62,6 +63,27 @@ static volatile uint32_t raw_pot;
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
  raw_pot = HAL_ADC_GetValue(hadc);
+}
+
+void tlacitko(void)
+{
+	static uint16_t debounce_t1 = 0xFFFF;
+	static uint16_t debounce_t2 = 0xFFFF;
+	static uint32_t timer;
+	if (HAL_GetTick() > timer + 5){
+		debounce_t1 <<= 1;
+		debounce_t2 <<= 1;
+		if (HAL_GPIO_ReadPin(S1_GPIO_Port, S1_Pin) == 0) debounce_t1 |= 0x0001;
+		if (debounce_t1 == 0x7FFF){
+			state = clockwise;
+		}
+		if (HAL_GPIO_ReadPin(S2_GPIO_Port, S2_Pin) == 0) debounce_t2 |= 0x0001;
+		if (debounce_t2 == 0x7FFF){
+			state = counterclockwise;
+		}
+		timer = HAL_GetTick();
+	}
+
 }
 /* USER CODE END 0 */
 
@@ -100,7 +122,6 @@ int main(void)
   HAL_ADC_Start_IT(&hadc);
   uint32_t delay = 0;
   uint16_t value = 0;
-//  static enum {clockwise, counterclockwise} state = clockwise
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,13 +129,27 @@ int main(void)
   while (1)
   {
 	// spreads timing across one bargraf cycle from 20-300ms
+	tlacitko();
 	delay = 10/3 + raw_pot*50/4096;
-
+	switch (state){
+	case clockwise:
+		sct_value(value);
+		value++;
+		break;
+	case counterclockwise:
+		sct_value(value);
+		value--;
+		break;
+	}
 	HAL_Delay((uint32_t) delay);
 
-	value++;
+
 	if (value > 5){
-		value = 0;
+		if (state == clockwise){
+			value = 0;
+		}else if(state == counterclockwise){
+			value = 5;
+		}
 	}
     /* USER CODE END WHILE */
 
@@ -274,6 +309,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PC0 PC1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA5 */
