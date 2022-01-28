@@ -147,12 +147,12 @@ int main(void)
 	HAL_Delay((uint32_t) delay);
 
 
-	if (value > 5){
+	if (value > 9){
 		if (state == clockwise){
 			value = 0;
 		// simple trick, if initial value is 0 and we decrement this value as long as it's uint16_t it suddenly became 2^16 which is bigger than 5 and it's set to max BCD value
 		}else if(state == counterclockwise){
-			value = 5;
+			value = 9;
 		}
 	}
     /* USER CODE END WHILE */

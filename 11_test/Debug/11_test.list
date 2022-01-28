@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00002838  080000c0  080000c0  000100c0  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000050  080028f8  080028f8  000128f8  2**2
+  2 .rodata       00000060  080028f8  080028f8  000128f8  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08002948  08002948  00020010  2**0
+  3 .ARM.extab    00000000  08002958  08002958  00020010  2**0
                   CONTENTS
-  4 .ARM          00000000  08002948  08002948  00020010  2**0
+  4 .ARM          00000000  08002958  08002958  00020010  2**0
                   CONTENTS
-  5 .preinit_array 00000000  08002948  08002948  00020010  2**0
+  5 .preinit_array 00000000  08002958  08002958  00020010  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08002948  08002948  00012948  2**2
+  6 .init_array   00000004  08002958  08002958  00012958  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  0800294c  0800294c  0001294c  2**2
+  7 .fini_array   00000004  0800295c  0800295c  0001295c  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000010  20000000  08002950  00020000  2**2
+  8 .data         00000010  20000000  08002960  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000000f0  20000010  08002960  00020010  2**2
+  9 .bss          000000f0  20000010  08002970  00020010  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  20000100  08002960  00020100  2**0
+ 10 ._user_heap_stack 00000600  20000100  08002970  00020100  2**0
                   ALLOC
  11 .ARM.attributes 00000028  00000000  00000000  00020010  2**0
                   CONTENTS, READONLY
@@ -465,10 +465,10 @@ int main(void)
  8000374:	f000 fb74 	bl	8000a60 <HAL_Delay>
 
 
-	if (value > 5){
+	if (value > 9){
  8000378:	1dbb      	adds	r3, r7, #6
  800037a:	881b      	ldrh	r3, [r3, #0]
- 800037c:	2b05      	cmp	r3, #5
+ 800037c:	2b09      	cmp	r3, #9
  800037e:	d9d1      	bls.n	8000324 <main+0x34>
 		if (state == clockwise){
  8000380:	4b09      	ldr	r3, [pc, #36]	; (80003a8 <main+0xb8>)
@@ -486,9 +486,9 @@ int main(void)
  8000392:	781b      	ldrb	r3, [r3, #0]
  8000394:	2b01      	cmp	r3, #1
  8000396:	d1c5      	bne.n	8000324 <main+0x34>
-			value = 5;
+			value = 9;
  8000398:	1dbb      	adds	r3, r7, #6
- 800039a:	2205      	movs	r2, #5
+ 800039a:	2209      	movs	r2, #9
  800039c:	801a      	strh	r2, [r3, #0]
 	tlacitko();
  800039e:	e7c1      	b.n	8000324 <main+0x34>
@@ -1661,7 +1661,7 @@ LoopForever:
   ldr r1, =_edata
  8000984:	20000010 	.word	0x20000010
   ldr r2, =_sidata
- 8000988:	08002950 	.word	0x08002950
+ 8000988:	08002960 	.word	0x08002960
   ldr r2, =_sbss
  800098c:	20000010 	.word	0x20000010
   ldr r4, =_ebss
@@ -6092,7 +6092,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  80020c4:	40021000 	.word	0x40021000
  80020c8:	00001388 	.word	0x00001388
  80020cc:	fffff8ff 	.word	0xfffff8ff
- 80020d0:	08002930 	.word	0x08002930
+ 80020d0:	08002940 	.word	0x08002940
  80020d4:	20000004 	.word	0x20000004
 
 080020d8 <HAL_RCC_GetSysClockFreq>:
@@ -6292,7 +6292,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  80021d4:	bd80      	pop	{r7, pc}
  80021d6:	46c0      	nop			; (mov r8, r8)
  80021d8:	40021000 	.word	0x40021000
- 80021dc:	08002940 	.word	0x08002940
+ 80021dc:	08002950 	.word	0x08002950
 
 080021e0 <HAL_UART_Init>:
   *        parameters in the UART_InitTypeDef and initialize the associated handle.
@@ -7523,10 +7523,10 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  80028ba:	4798      	blx	r3
  80028bc:	3601      	adds	r6, #1
  80028be:	e7f2      	b.n	80028a6 <__libc_init_array+0x1e>
- 80028c0:	08002948 	.word	0x08002948
- 80028c4:	08002948 	.word	0x08002948
- 80028c8:	08002948 	.word	0x08002948
- 80028cc:	0800294c 	.word	0x0800294c
+ 80028c0:	08002958 	.word	0x08002958
+ 80028c4:	08002958 	.word	0x08002958
+ 80028c8:	08002958 	.word	0x08002958
+ 80028cc:	0800295c 	.word	0x0800295c
 
 080028d0 <memset>:
  80028d0:	0003      	movs	r3, r0
